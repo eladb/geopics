@@ -1,10 +1,6 @@
 var app = require('express').createServer(),
     Mongolian = require('mongolian');
 
-    //mongo://rmlstore.cloudapp.net:10000/rml
-var rmldb = new Mongolian('mongo://157.55.174.56:10000/rml'),
-    entities = rmldb.collection('entities');
-
 app.get(/.*/, function(req, res) {
     var lat = req.query.lat;
     var lon = req.query.lon;
@@ -61,6 +57,9 @@ app.get(/.*/, function(req, res) {
         res.send(result);
     }; 
     
+    //mongo://rmlstore.cloudapp.net:10000/rml
+    var rmldb = new Mongolian('mongo://157.55.174.56:10000/rml');
+    var entities = rmldb.collection('entities');
     entities.find(where, select).limit(limit).toArray(callback);
 });
 
