@@ -1,6 +1,7 @@
-var http = require('http');
+var app = require('express').createServer();
 
-http.createServer(function(req, res) {
-  res.write('hello');
-  res.end();
-}).listen(process.argv[3]);
+app.get(/.*/, function(req, res) {
+  res.send('<p>hello</p>');
+});
+
+app.listen(process.argv[3]);
