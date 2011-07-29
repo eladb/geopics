@@ -9,7 +9,7 @@ app.get(/.*/, function(req, res) {
     var lat = req.query.lat;
     var lon = req.query.lon;
     if (!lat || !lon) {
-        res.send('please specify lat & lon in the query parameters', 400);
+        res.send('<p>usage: /?lat=LATITUDE&lon=LONGITUDE[&limit=LIMIT]</p><p>eg: <a href="/?lat=47.5492515563965&lon=-122.251714706421&limit=200">/?lat=47.5492515563965&lon=-122.251714706421&limit=200</a></p>', 400);
         return;
     }
     
