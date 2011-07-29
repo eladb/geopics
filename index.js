@@ -21,7 +21,8 @@ app.get(/.*/, function(req, res) {
     var limit = 5;
     if (limitQ) limit = parseInt(limitQ);
     
-    var where = { "transform.worldPos": { $near: [lon, lat] } };
+    
+    var where = { "transform.worldPos": { $near: [lon, lat], $maxDistance: 0.01 } };
     var select = { "transform.worldPos": true, sources: true };
     var callback = function(err, docs) {
         var result = [];
