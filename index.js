@@ -5,7 +5,17 @@ app.get(/.*/, function(req, res) {
     var lat = req.query.lat;
     var lon = req.query.lon;
     if (!lat || !lon) {
-        res.send('<p>usage: GET /<br/><li>lat=LATITUDE</li><li>lon=LONGITUDE</li><li><i>optional: </i>limit=LIMIT</li><li><i>optional: </i>callback=JSONP_CALLBACK</li></p><p>eg: <a href="/?lat=47.5492515563965&lon=-122.251714706421&limit=200&callback=callme">/?lat=47.5492515563965&lon=-122.251714706421&limit=200&callback=callme</a></p>');
+        var html = '';
+        html += '<p>';
+        html += 'usage: GET /<br/>';
+        html += '<li>lat=LATITUDE</li>';
+        html += '<li>lon=LONGITUDE</li>';
+        html += '<li><i>optional: </i>limit=LIMIT (default is 5)</li>';
+        html += '<li><i>optional: </i>callback=JSONP_CALLBACK</li>';
+        html += '<li><i>optional: </i>distance=DISTANCE_IN_DEGREES (default is 0.01)</li>';
+        html += '</p>';
+        html += '<p>eg: <a href="/?lat=47.5492515563965&lon=-122.251714706421&limit=200&callback=callme">/?lat=47.5492515563965&lon=-122.251714706421&limit=200&callback=callme</a></p>';
+        res.send(html);
         return;
     }
     
@@ -21,8 +31,11 @@ app.get(/.*/, function(req, res) {
     var limit = 5;
     if (limitQ) limit = parseInt(limitQ);
     
+    var maxDist = 0.01;
+    var maxDistQ = req.query.distance;
+    if (maxDistQ) maxDist = parseFloat(maxDistQ);
     
-    var where = { "transform.worldPos": { $near: [lon, lat], $maxDistance: 0.01 } };
+    var where = { "transform.worldPos": { $near: [lon, lat], $maxDistance: maxDist } };
     var select = { "transform.worldPos": true, sources: true };
     var callback = function(err, docs) {
         var result = [];
